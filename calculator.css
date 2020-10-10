@@ -18,12 +18,12 @@ body, html {
 }
 
 .grid-item.equals {
-    grid-row-start: 3;
+    grid-row-start: 5;
     grid-row-end: 7;
     grid-column-start: 4;
     background-color: #FCAF00;
     height: auto;
-    line-height: calc(5rem * 4 + 2px * 3);
+    line-height: calc(5rem * 2 + 2px * 1);
 }
 
 .grid-item.screen {

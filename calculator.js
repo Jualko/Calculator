@@ -25,6 +25,9 @@ function attachEventListeners() {
             e.addEventListener("click", handleClear);
         } else if (e.innerText === "=") {
             e.addEventListener("click", handleCalculate);
+        }
+        else if (e.dataset.conv) {
+            e.addEventListener("click", handleConvert);
         } else {
             e.addEventListener("click", handleOperator);
         }
@@ -79,6 +82,37 @@ function handleNumber(oEv) {
 
     setScreen(getScreen() + oEv.target.innerText);
     lastPress = "handleNumber";
+}
+
+function handleConvert(oEv) {
+    if (oEv.target.dataset.conv === "dec") {
+        convertToDec();
+    }
+    else if (oEv.target.dataset.conv === "bin") {
+        convertToBin();
+    }
+}
+
+function convertToDec() {
+    if (getScreen().match(/[2-9.]/)) {
+        console.log("invalid binary number")
+        return;
+    }
+
+    result = 0;
+
+    (getScreenParsed() + "").split("").forEach(function (e, i, a) {
+        result += parseInt(e) * (2 ** (a.length - i - 1));
+    })
+
+    setScreen(result);
+}
+
+function convertToBin() {
+    if (getScreen().match(/[e.]/)) {
+        console.log("invalid decimal number")
+        return;
+    }
 }
 
 function calculateNumber(operator) {
@@ -143,4 +177,5 @@ function initializeVariables() {
     lastPress = undefined;
     float = false;
     bNewNumber = true;
+    result = undefined;
 }
