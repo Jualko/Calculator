@@ -19,37 +19,19 @@ function attachEventListeners() {
     var aElements = [].slice.call(elements);
     aElements.forEach(e => {
         if (!isNaN(e.innerText) || e.innerText === ".") {
-            e.addEventListener("click", changeNumber);
+            e.addEventListener("click", handleNumber);
         } else if (e.innerText === "AC") {
             clear = e;
             e.addEventListener("click", handleClear);
         } else if (e.innerText === "=") {
-            e.addEventListener("click", calculate);
+            e.addEventListener("click", handleCalculate);
         } else {
-            e.addEventListener("click", operator);
+            e.addEventListener("click", handleOperator);
         }
 
     });
 }
 
-function calculateNumber(operator) {
-    switch (operator) {
-        case "+":
-            screen.innerText = lastNumber + parseFloat(screen.innerText);
-            break;
-        case "-":
-            screen.innerText = lastNumber - parseFloat(screen.innerText);
-            break;
-        case "×":
-            screen.innerText = lastNumber * parseFloat(screen.innerText);
-            break;
-        case "÷":
-            debugger
-            screen.innerText = lastNumber / parseFloat(screen.innerText);
-            debugger
-            break;
-        default:
-            break;
 function handleClear(oEv) {
     if (clear.innerText === "C") {
         clear.innerText = "AC";
@@ -62,22 +44,24 @@ function handleClear(oEv) {
     lastPress = "handleClear";
 }
 
-function operator(oEv) {
-    if (lastNumber && lastPress === "changeNumber") {
+function handleOperator(oEv) {
+    setClear("C");
+    if (lastNumber && lastPress === "handleNumber") {
         calculateNumber(lastOperator);
     }
     lastOperator = oEv.target.innerText;
-    lastNumber = parseFloat(screen.innerText);
+    lastNumber = getScreenParsed();
     bNewNumber = true;
-    lastPress = "operator";
+    lastPress = "handleOperator";
 }
 
-function calculate(oEv) {
+function handleCalculate(oEv) {
     calculateNumber(lastOperator);
-    lastPress = "calculate";
+    lastPress = "handleCalculate";
 }
 
-function changeNumber(oEv) {
+function handleNumber(oEv) {
+    setClear("C");
     if (bNewNumber) {
         clearScreen();
         bNewNumber = false;
@@ -90,8 +74,36 @@ function changeNumber(oEv) {
             float = true;
         }
     }
-    screen.innerText += oEv.target.innerText;
-    lastPress = "changeNumber";
+    setScreen(getScreen() + oEv.target.innerText);
+    lastPress = "handleNumber";
+}
+
+function calculateNumber(operator) {
+    if (operator && getScreen() !== "") {
+        switch (operator) {
+            case "+":
+                result = lastNumber + getScreenParsed();
+                break;
+            case "-":
+                result = lastNumber - getScreenParsed();
+                break;
+            case "×":
+                result = lastNumber * getScreenParsed();
+                break;
+            case "÷":
+                result = lastNumber / getScreenParsed();
+                break;
+        }
+
+        if (lastPress !== "handleCalculate") {
+            lastNumber = getScreenParsed();
+        }
+
+    }
+    if (result) {
+        setScreen(result);
+    }
+}
 
 function setClear(char) {
     clear.innerText = char;
