@@ -93,10 +93,26 @@ function changeNumber(oEv) {
     screen.innerText += oEv.target.innerText;
     lastPress = "changeNumber";
 
+function setClear(char) {
+    clear.innerText = char;
+    clear.style.backgroundColor = "#3A3A3A";
+}
+
 function clearScreen() {
     screen.innerText = "";
 }
 
+function setScreen(x) {
+    screen.innerText = x;
+}
+
+function getScreen() {
+    return screen.innerText;
+}
+
+function getScreenParsed() {
+    return parseFloat(screen.innerText);
+}
 
 function initializeVariables() {
     lastNumber = undefined;
