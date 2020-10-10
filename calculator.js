@@ -85,7 +85,11 @@ function calculateNumber(operator) {
                 result = lastNumber + getScreenParsed();
                 break;
             case "-":
-                result = lastNumber - getScreenParsed();
+                if (lastPress === "handleCalculate") {
+                    result = getScreenParsed() - lastNumber;
+                } else {
+                    result = lastNumber - getScreenParsed();
+                }
                 break;
             case "×":
                 result = lastNumber * getScreenParsed();
@@ -100,7 +104,7 @@ function calculateNumber(operator) {
         }
 
     }
-    if (result) {
+    if (result || result === 0) {
         setScreen(result);
     }
 }
