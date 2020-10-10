@@ -62,11 +62,13 @@ function handleCalculate(oEv) {
 
 function handleNumber(oEv) {
     setClear("C");
+
     if (bNewNumber) {
         clearScreen();
         bNewNumber = false;
         float = false;
     }
+
     if (oEv.target.innerText === ".") {
         if (float === true) {
             return;
@@ -74,6 +76,7 @@ function handleNumber(oEv) {
             float = true;
         }
     }
+
     setScreen(getScreen() + oEv.target.innerText);
     lastPress = "handleNumber";
 }
@@ -95,7 +98,11 @@ function calculateNumber(operator) {
                 result = lastNumber * getScreenParsed();
                 break;
             case "÷":
-                result = lastNumber / getScreenParsed();
+                if (lastPress === "handleCalculate") {
+                    result = getScreenParsed() / lastNumber;
+                } else {
+                    result = lastNumber / getScreenParsed();
+                }
                 break;
         }
 
