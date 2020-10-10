@@ -94,25 +94,29 @@ function handleConvert(oEv) {
 }
 
 function convertToDec() {
-    if (getScreen().match(/[2-9.]/)) {
+    if (getScreen().match(/[2-9.e]/) || !getScreen().match(/[01]/)) {
         console.log("invalid binary number")
         return;
     }
 
-    result = 0;
+    /*result = 0;
 
     (getScreenParsed() + "").split("").forEach(function (e, i, a) {
         result += parseInt(e) * (2 ** (a.length - i - 1));
     })
 
-    setScreen(result);
+    setScreen(result);*/
+
+    setScreen(parseInt(getScreen(), 2));
 }
 
 function convertToBin() {
-    if (getScreen().match(/[e.]/)) {
+    if (getScreen().match(/[e.]/) || !getScreen().match(/[0-9]/)) {
         console.log("invalid decimal number")
         return;
     }
+
+    setScreen(getScreenParsed().toString(2));
 }
 
 function calculateNumber(operator) {

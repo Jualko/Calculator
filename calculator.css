@@ -40,6 +40,10 @@ body, html {
     background-color: #2C2C2C;
 }
 
+.grid-item.conv {
+    background-color: #134085;
+}
+
 .grid-item {
     background-color: #3A3A3A;
     width: 5rem;
