@@ -1,9 +1,13 @@
 var screen;
-var lastNumber = undefined;
-var lastOperator = undefined;
-var lastPress = undefined;
-var float = false;
-var bNewNumber = true;
+var clear;
+var lastNumber;
+var lastOperator;
+var lastPress;
+var float;
+var bNewNumber;
+var result;
+
+initializeVariables()
 
 document.addEventListener("DOMContentLoaded", function (event) {
     screen = document.getElementsByClassName("screen")[0];
@@ -16,8 +20,9 @@ function attachEventListeners() {
     aElements.forEach(e => {
         if (!isNaN(e.innerText) || e.innerText === ".") {
             e.addEventListener("click", changeNumber);
-        } else if (e.innerText === "C") {
-            e.addEventListener("click", clear);
+        } else if (e.innerText === "AC") {
+            clear = e;
+            e.addEventListener("click", handleClear);
         } else if (e.innerText === "=") {
             e.addEventListener("click", calculate);
         } else {
@@ -25,10 +30,6 @@ function attachEventListeners() {
         }
 
     });
-}
-
-function clearScreen() {
-    screen.innerText = "";
 }
 
 function calculateNumber(operator) {
@@ -49,11 +50,16 @@ function calculateNumber(operator) {
             break;
         default:
             break;
+function handleClear(oEv) {
+    if (clear.innerText === "C") {
+        clear.innerText = "AC";
+        clear.style.backgroundColor = "red";
+    } else if (clear.innerText === "AC") {
+        initializeVariables();
+        clear.style.backgroundColor = "#3A3A3A";
     }
-}
-
-function clear(oEv) {
     clearScreen();
+    lastPress = "handleClear";
 }
 
 function operator(oEv) {
@@ -86,4 +92,16 @@ function changeNumber(oEv) {
     }
     screen.innerText += oEv.target.innerText;
     lastPress = "changeNumber";
+
+function clearScreen() {
+    screen.innerText = "";
+}
+
+
+function initializeVariables() {
+    lastNumber = undefined;
+    lastOperator = undefined;
+    lastPress = undefined;
+    float = false;
+    bNewNumber = true;
 }
